@@ -33,24 +33,14 @@ router.get('/', (req, res) => {
 })
 //   /student/save
 router.post('/save', async (req, res) => {
+  req.body
   let db = req.db
-
-  let list = []
-  for (let i = 0; i < 5; i++) {
-    list.push({province_code: 'code' + i, province_name: 'name' + i, zone_id: 0})
-  }
-  try {
-    let ids = await db('province').insert(list, 'id')
-    res.send({
-      status: true,
-    })
-    console.log('ids=', ids)
-  } catch (error) {
-    res.send({
-      status: false,
-      error: 'เกิดข้อผิดพลาด',
-    })
-  }
+  // for update data 
+  await db('student').where({ids: req.body.ids}).update({
+    fname: req.body.fname,
+    lname: req.body.lname,
+  })
+  res.send({ok: true})  //response to user
 })
 
 router.delete('/:id', function (req, res) {
